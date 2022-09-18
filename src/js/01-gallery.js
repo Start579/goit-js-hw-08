@@ -1,11 +1,11 @@
-// // Add imports above this line
+// Add imports above this line
 import { galleryItems } from './gallery-items';
-// // Change code below this line
-
+// Change code below this line
 import SimpleLightbox from "simplelightbox";
-
+import '../css/common.css';
+import '../css/01-gallery.css';
 import "simplelightbox/dist/simple-lightbox.min.css";
-// Добавлена галлерея
+
 const gallery = document.querySelector(".gallery");
 const image = galleryItems.map(({preview, description, original}) => {
 return `<li class="gallery__item">
