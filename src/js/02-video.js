@@ -16,25 +16,17 @@ const SAVE_TIME = 'videoplayer-current-time';
     
       // console.log('play', onPlay);
 // Начало времени воспроизведения**********************
-//     player.getCurrentTime(60).then(function(seconds) {
+player.setCurrentTime(SAVE_TIME).then(function(seconds) {
+    // seconds = the actual time that the player seeked to
 
-//         // seconds = the current playback position
-//     }).catch(function(error) {
-//         // an error occurred
-//     });
-// // Локальное Хранилище*********************************
+}).catch(function(error) {
+    switch (error.name) {
+        case 'RangeError':
+            // the time was less than 0 or greater than the video’s duration
+            break;
 
-
-    // player.setCurrentTime(seconds).then(function(seconds) {
-    //     // seconds = the actual time that the player seeked to
-    // }).catch(function(error) {
-    //     switch (error.name) {
-    //         case 'RangeError':
-    //             // the time was less than 0 or greater than the video’s duration
-    //             break;
-    
-    //         default:
-    //             // some other error occurred
-    //             break;
-    //     }
-    // });
+        default:
+            // some other error occurred
+            break;
+    }
+});
