@@ -7,26 +7,25 @@ const SAVE_TIME = 'videoplayer-current-time';
 // ****************************************************
     const onPlay = function(data) {
         
-           localStorage.setItem(SAVE_TIME, JSON.stringify(data));         
-        
-        // data is an object containing properties specific to that event
+           localStorage.setItem(SAVE_TIME, JSON.stringify(data["seconds"]));    
     };
     
-    player.on('timeupdate', onPlay);
-    
-      // console.log('play', onPlay);
-// Начало времени воспроизведения**********************
-player.setCurrentTime(SAVE_TIME).then(function(seconds) {
-    // seconds = the actual time that the player seeked to
+    player.on('timeupdate', throttle(onPlay, 1000));
 
+time ();
+function time() {
+const currentTime = JSON.parse(localStorage.getItem(SAVE_TIME));
+if (currentTime === 0) {
+return;}
+player.setCurrentTime(currentTime).then(function(seconds) {
+
+    
 }).catch(function(error) {
     switch (error.name) {
-        case 'RangeError':
-            // the time was less than 0 or greater than the video’s duration
+        case 'RangeError':          
             break;
-
         default:
-            // some other error occurred
             break;
     }
 });
+}
