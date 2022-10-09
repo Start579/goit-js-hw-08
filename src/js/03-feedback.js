@@ -1,27 +1,43 @@
+//*************************************************************
+import throttle from 'lodash.throttle';
 
-const save = (key, value) => {
-    try {
-      const serializedState = JSON.stringify(value);
-      localStorage.setItem(key, serializedState);
-    } catch (error) {
-      console.error("Set state error: ", error.message);
-    }
-  };
-  
-  const load = key => {
-    try {
-      const serializedState = localStorage.getItem(key);
-      return serializedState === null ? undefined : JSON.parse(serializedState);
-    } catch (error) {
-      console.error("Get state error: ", error.message);
-    }
-  };
-  
-  export default {
-    save,
-    load,
-  };
+const formRef = document.querySelector(".feedback-form");
+let localData = {};
+//*************************************************************
 
+formRef.addEventListener('input', throttle(onFormInput, 500));
+formRef.addEventListener('submit', formSubmit);
 
+function formSubmit (event) {
+  event.preventDefault();
+localStorage.removeItem('feedback-form-state');
+localData = {};
+  const { elements: { email, message},
+} = event.currentTarget;
+if (email.value === "" || message.value === "") {
+return alert("Заполните форму")
+}
 
+const userData = {
+  email: email.value,
+  message: message.value,
+};
+ 
+  formRef.reset();
+};
 
+function onFormInput(event) {
+  localData[event.target.name] = event.target.value;
+
+  localStorage.setItem('feedback-form-state', JSON.stringify(localData));    
+};
+function localDataParse () {
+  const parseData = JSON.parse(localStorage.getItem('feedback-form-state'));
+  if (parseData === null) {
+    return;
+  }
+
+formRef[0].value = parseData.email || "";
+formRef[1].value = parseData.message || "";
+};
+localDataParse ();
