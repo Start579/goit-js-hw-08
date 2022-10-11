@@ -22,7 +22,7 @@ const userData = {
   email: email.value,
   message: message.value,
 };
- 
+ console.log(userData);
   formRef.reset();
 };
 
